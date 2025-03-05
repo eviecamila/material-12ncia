@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apps para realizar tareas escolares</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+        margin: 0;
+        background-color: #f5f5f5;
+      }
+
+      .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 20px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+        height: 100%;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .card-image {
+        height: 200px;
+        background: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .card-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transition: transform 0.3s;
+      }
+
+      .card-content {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .card-title {
+        font-size: 1.5em;
+        color: #2c3e50;
+        margin: 10px 0;
+      }
+
+      .card-description {
+        color: #7f8c8d;
+        margin-bottom: 20px;
+      }
+
+      .card-actions {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        border-top: 1px solid #eee;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .card:hover .card-actions {
+        opacity: 1;
+      }
+
+      .card-button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        font-weight: bold;
+      }
+
+      .card-button:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-container" id="cardContainer"></div>
+
+    <script>
+      const cardsData = [
+        {
+          titulo: "APPS de uso libre",
+          descripcion: "Software libre según GNU",
+          imagen:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Heckert_GNU_white.svg/800px-Heckert_GNU_white.svg.png",
+          link: "https://www.gnu.org/philosophy/free-sw.es.html",
+        },
+        {
+          titulo: "GitHub",
+          descripcion: "Plataforma de desarrollo colaborativo",
+          imagen:
+            "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+          link: "https://github.com",
+        },
+        {
+          titulo: "Google Tasks",
+          imagen:
+            "https://play-lh.googleusercontent.com/pjUulZ-Vdo7qPKxk3IRhnk8SORPlgSydSyYEjm7fGcoXO8wDyYisWXwQqEjMryZ_sqK2=w240-h480-rw",
+          descripcion: "Este sitio funciona para gestionar nuestras tareas",
+          link: "https://tasks.google.com",
+        },
+        {
+          titulo: "Evernote",
+          descripcion: "Organiza tus notas y tareas",
+          imagen:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6SJyRZIpyp8vWr5NYrv476VY97noSwAaF5g&s",
+          link: "https://evernote.com",
+        },
+        {
+          titulo: "MyHomework",
+          descripcion: "Organizador académico",
+          imagen:"https://play-lh.googleusercontent.com/cdLVgEqDcxKA0znIqVC6--EJL8kVejCZiRObIoYg1DFUFP9JzHktgfGUIAjJ4gmHvA",link:"https://myhomeworkapp.com"
+        },
+        {
+          titulo: "Flash Cards",
+          descripcion: "Tarjetas Fisicas",
+          imagen:"https://images.twinkl.co.uk/tw1n/image/private/t_630/image_repo/a4/43/au-l-2548961-hardware-and-software-flash-cards_ver_6.jpg",
+          link:"https://www.rededuca.net/contexto-educativo/f/flash-cards#:~:text=Las%20flashcards%2C%20conocidas%20en%20español,%2C%20fórmulas%2C%20datos%20o%20fechas."
+        },
+        {
+          titulo: "ToodleDo",
+          descripcion: "Agenda virtual",
+          imagen:"https://images.versus.io/objects/toodledo.front.master.1576684641045.jpg",
+          link:"https://www.toodledo.com"
+        },
+        
+      ];
+
+      // Renderizado inicial
+      renderCards();
+
+      function renderCards() {
+        const container = document.getElementById("cardContainer");
+        container.innerHTML = "";
+
+        cardsData.forEach((card, index) => {
+          const cardDiv = document.createElement("div");
+          cardDiv.className = "card";
+          cardDiv.innerHTML = `
+                    <a href=${card.link} target="_blank"><div class="card-image">
+                        <img src="${card.imagen}" alt="Vista previa">
+                    </div>
+                    <div class="card-content">
+                        ${card.titulo}
+                    </div>
+                    <div class="card-actions">
+                    </div></a>
+                `;
+          container.appendChild(cardDiv);
+        });
+      }
+
+      function handleImageUpload(input, index) {
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function () {
+          cardsData[index].imagen = reader.result;
+          renderCards(); // Actualiza la vista
+        };
+
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      }
+
+      function updateTitle(input, index) {
+        cardsData[index].titulo = input.value;
+      }
+
+      function updateDescription(input, index) {
+        cardsData[index].descripcion = input.value;
+      }
+
+      function saveCard(index) {
+        const card = cardsData[index];
+        if (
+          card.imagen ===
+          "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        ) {
+          alert("Debes cargar una imagen antes de guardar");
+          return;
+        }
+
+        alert(`Tarjeta guardada:\n${JSON.stringify(card, null, 2)}`);
+        // Aquí puedes implementar la lógica para guardar en el servidor
+      }
+
+      function deleteCard(index) {
+        if (confirm("¿Seguro que quieres eliminar esta tarjeta?")) {
+          cardsData.splice(index, 1);
+          renderCards();
+        }
+      }
+
+      function addNewCard(title = "", img = "", descripcion = "") {
+        cardsData.push({
+          titulo: `Tarjeta ${title}`,
+          imagen: imagen,
+          descripcion: descripcion,
+        });
+        renderCards();
+      }
+    </script>
+  </body>
+</html>
